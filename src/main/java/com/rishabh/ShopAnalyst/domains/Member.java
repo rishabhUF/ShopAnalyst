@@ -2,6 +2,7 @@ package com.rishabh.ShopAnalyst.domains;
 
 import com.mongodb.BasicDBObject;
 import com.rishabh.ShopAnalyst.constants.Constants;
+import org.bson.Document;
 
 public class Member {
 
@@ -71,13 +72,13 @@ public class Member {
         this.dob = dob;
     }
 
-    public static Member getMemberFromMongo(final BasicDBObject dbo) {
+    public static Member getMemberFromMongo(final Document dbo) {
         final Member member = new Member();
-        member.setWeight(dbo.getInt(Constants.WEIGHT));
-        member.setId(dbo.getInt(Constants.ID));
+        member.setWeight(dbo.getInteger(Constants.WEIGHT));
+        member.setId(dbo.getInteger(Constants.ID));
         member.setCaption(dbo.getString(Constants.CAPTION));
-        member.setEthnicity(dbo.getInt(Constants.ETHNICITY));
-        member.setHeight(dbo.getInt(Constants.HEIGHT));
+        member.setEthnicity(dbo.getInteger(Constants.ETHNICITY));
+        member.setHeight(dbo.getInteger(Constants.HEIGHT));
         member.setDob(dbo.getString(Constants.DOB));
         member.setIs_veg(dbo.getBoolean(Constants.isVEG));
         member.setIs_drink(dbo.getBoolean(Constants.isDRINK));

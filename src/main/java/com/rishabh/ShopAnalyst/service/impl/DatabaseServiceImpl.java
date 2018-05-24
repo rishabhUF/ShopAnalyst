@@ -1,16 +1,18 @@
 package com.rishabh.ShopAnalyst.service.impl;
 
-import com.mongodb.DBCollection;
+import com.google.gson.Gson;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.rishabh.ShopAnalyst.constants.Constants;
+import com.rishabh.ShopAnalyst.domains.Member;
 import com.rishabh.ShopAnalyst.service.DatabaseService;
 import com.rishabh.ShopAnalyst.util.Jsonreader;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 
-import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,7 +42,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public String insertData() {
         MongoClient client = null;
-        try{
+        try {
             client = new MongoClient("localHost", 27017);
             MongoDatabase db = client.getDatabase(Constants.DB_NAME);
 
@@ -51,11 +53,12 @@ public class DatabaseServiceImpl implements DatabaseService {
             // Now insert the data from Json
             Jsonreader jsonreader = new Jsonreader(collection);
             int count = jsonreader.loadDataInMongo();
-            return "Inserted " + count + "records in mongo db" + "\nDB_NAME = " + Constants.DB_NAME + "\nCOLLECTION = " + Constants.COLL_NAME ;
+            return "Inserted " + count + "records in mongo db" + "\nDB_NAME = " + Constants.DB_NAME + "\nCOLLECTION = " + Constants.COLL_NAME;
         } finally {
             if (client != null) {
                 client.close();
             }
+        }
     }
 
     @Override
@@ -65,8 +68,22 @@ public class DatabaseServiceImpl implements DatabaseService {
             List<Member> memberData = new ArrayList<Member>();
             try {
                 client = new MongoClient("localhost", 27017);
-
+                MongoDatabase db = client.getDatabase(Constants.DB_NAME);
+                FindIterable<Document> cursorIterator = db.getCollection(Constants.COLL_NAME).find();
+                for (Document cursor : cursorIterator) {
+                    final Member member = Member.getMemberFromMongo(cursor);
+                    memberData.add(member);
+                }
+            }finally {
+                if (client != null)
+                    client.close();
+            }
+        if (memberData.size() == 0) {
+            final Member member = new Member();
+            member.setErrorMessage("No element found. Empty Collection");
+            memberData.add(member);
         }
-        return null;
+        Gson gson = new Gson();
+        return gson.toJson(memberData);
     }
 }
