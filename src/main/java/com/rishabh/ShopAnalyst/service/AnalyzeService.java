@@ -1,4 +1,4 @@
 package com.rishabh.ShopAnalyst.service;
 
-public interface AnalyseService {
+public interface AnalyzeService {
 }

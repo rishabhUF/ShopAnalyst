@@ -2,8 +2,8 @@ package com.rishabh.ShopAnalyst.constants;
 
 public class Constants {
 
-    public final String DB_NAME = "ShopAnalystsDB";
-    public final String COLL_NAME = "ShopAnalyst";
+    public static final String DB_NAME = "ShopAnalystsDB";
+    public static final String COLL_NAME = "ShopAnalyst";
 
     public final static String JSON_FILE_LOCATION = "";
 

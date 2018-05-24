@@ -3,16 +3,18 @@ package com.rishabh.ShopAnalyst.util;
 import com.google.gson.stream.JsonReader;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.client.MongoCollection;
 import com.rishabh.ShopAnalyst.constants.Constants;
+import org.bson.Document;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Jsonreader {
-    DBCollection collection;
+    MongoCollection<Document> collection;
 
-    public Jsonreader(DBCollection collection)
+    public Jsonreader(MongoCollection<Document> collection)
     {
         this.collection = collection;
     }
@@ -26,8 +28,8 @@ public class Jsonreader {
             reader.beginArray();
             while(reader.hasNext())
             {
-                BasicDBObject object = readMessage(reader);
-                this.collection.insert(object);
+                Document document = readerMessage(reader);
+                this.collection.insertOne(document);
                 count+=1;
             }
             reader.endArray();
@@ -40,10 +42,9 @@ public class Jsonreader {
         return count;
     }
 
-
-    public BasicDBObject readMessage(JsonReader reader) throws IOException
-    {
-        BasicDBObject obj = new BasicDBObject();
+    private Document readerMessage(JsonReader reader) throws IOException{
+        Document obj = new Document();
+        //BasicDBObject obj = new BasicDBObject();
         // reading the object from the json object.
         reader.beginObject();
 
