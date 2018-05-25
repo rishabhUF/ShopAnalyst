@@ -7,10 +7,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.rishabh.ShopAnalyst.constants.Constants;
+import com.rishabh.ShopAnalyst.doa.CustomeMongoDao;
 import com.rishabh.ShopAnalyst.domains.Member;
 import com.rishabh.ShopAnalyst.service.DatabaseService;
 import com.rishabh.ShopAnalyst.util.Jsonreader;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,28 +21,16 @@ import java.util.List;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
+
+    @Autowired
+    CustomeMongoDao mongoDao;
     @Override
     public String getDatabaseNames() {
-        MongoClient client = null;
         String result = "";
-        try{
-            client = new MongoClient("localHost", 27017);
-            MongoIterable<String> databases = client.listDatabaseNames();
-
-            for(String db : databases)
-            {
-                result = result + db.toUpperCase() + "( "+db+" ) :";
-                result = result + '\n';
-               // MongoDatabase dbs = client.getDatabase(db);
-            }
-            return result;
-        } finally {
-            if (client != null) {
-                client.close();
-            }
-            System.out.print(result);
-            return result;
-        }
+        result = mongoDao.getDatabaseNames();
+        if(result.isEmpty())
+            result = "OOPS !! sorry, There are no databases present to show";
+        return result;
     }
 
 
