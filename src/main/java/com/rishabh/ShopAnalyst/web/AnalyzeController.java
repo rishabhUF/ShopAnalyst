@@ -41,7 +41,7 @@ public class AnalyzeController {
     @RequestMapping(value ="/social_habits", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String socialHabits(@RequestParam(value ="veg") int veg, @RequestParam(value ="drink") int drink)
+    public String socialHabits(@RequestParam(value ="veg") String veg, @RequestParam(value ="drink") String drink)
     {
         return analyzeService.getSocialHabits(veg,drink);
     }

@@ -8,5 +8,5 @@ public interface AnalyzeService {
 
     String calculateAverage(String param);
 
-    String getSocialHabits(int veg, int drink);
+    String getSocialHabits(String veg, String drink);
 }

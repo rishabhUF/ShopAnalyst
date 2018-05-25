@@ -122,7 +122,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public String getSocialHabits(int veg, int drink) {
+    public String getSocialHabits(String veg, String drink) {
         MongoClient client = null;
 //        try {
 //            List<Member> memberData = new ArrayList<Member>();
