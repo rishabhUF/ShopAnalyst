@@ -1,5 +1,6 @@
 package com.rishabh.ShopAnalyst.service;
 
+
 public interface AnalyzeService {
     String textSearch(String query, String pageNumber);
 

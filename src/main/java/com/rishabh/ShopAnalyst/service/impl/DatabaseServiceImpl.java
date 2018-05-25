@@ -5,6 +5,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.rishabh.ShopAnalyst.constants.Constants;
 import com.rishabh.ShopAnalyst.domains.Member;
 import com.rishabh.ShopAnalyst.service.DatabaseService;
@@ -21,20 +22,24 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public String getDatabaseNames() {
         MongoClient client = null;
+        String result = "";
         try{
             client = new MongoClient("localHost", 27017);
-            List<String> databases = (List<String>) client.listDatabaseNames();
-            String result = "";
+            MongoIterable<String> databases = client.listDatabaseNames();
+
             for(String db : databases)
             {
                 result = result + db.toUpperCase() + "( "+db+" ) :";
                 result = result + '\n';
+               // MongoDatabase dbs = client.getDatabase(db);
             }
             return result;
         } finally {
             if (client != null) {
                 client.close();
             }
+            System.out.print(result);
+            return result;
         }
     }
 

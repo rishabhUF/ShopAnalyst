@@ -75,7 +75,7 @@ public class Member {
     public static Member getMemberFromMongo(final Document dbo) {
         final Member member = new Member();
         member.setWeight(dbo.getInteger(Constants.WEIGHT));
-        member.setId(dbo.getInteger(Constants.ID));
+        member.setId(Integer.parseInt(dbo.getString(Constants.ID)));
         member.setCaption(dbo.getString(Constants.CAPTION));
         member.setEthnicity(dbo.getInteger(Constants.ETHNICITY));
         member.setHeight(dbo.getInteger(Constants.HEIGHT));

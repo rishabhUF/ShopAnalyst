@@ -5,7 +5,7 @@ public class Constants {
     public static final String DB_NAME = "ShopAnalystsDB";
     public static final String COLL_NAME = "ShopAnalyst";
 
-    public final static String JSON_FILE_LOCATION = "";
+    public final static String JSON_FILE_LOCATION = "/Users/rsharma/projects/TDD/ShopAnalyst/src/main/resources/data1000.json";
 
     public final static String  ID = "pnum";
     public final static String  DOB = "dob";
