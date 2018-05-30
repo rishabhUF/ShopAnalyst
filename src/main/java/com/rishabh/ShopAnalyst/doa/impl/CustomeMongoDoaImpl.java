@@ -1,25 +1,20 @@
 package com.rishabh.ShopAnalyst.doa.impl;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import com.rishabh.ShopAnalyst.constants.Constants;
 import com.rishabh.ShopAnalyst.doa.CustomeMongoDao;
 
+import org.bson.Document;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class CustomeMongoDoaImpl implements CustomeMongoDao {
 
-    @Override
-    public String getDatabaseNames() {
-        String result = "";
-        MongoIterable<String> databases = getDatabasesFromServer();
-        for(String db : databases)
-        {
-            result = result + db.toUpperCase() + "( "+db+" ) :";
-            result = result + '\n';
-            // MongoDatabase dbs = client.getDatabase(db);
-        }
-        return result;
-    }
-
-    private MongoIterable<String> getDatabasesFromServer() {
+   @Override
+   public MongoIterable<String> getDatabasesFromServer() {
         MongoClient client = null;
         try {
             client = new MongoClient("localHost", 27017);
@@ -31,4 +26,20 @@ public class CustomeMongoDoaImpl implements CustomeMongoDao {
             }
         }
     }
+
+    @Override
+    public  MongoCollection<Document> getCollectionFromDatabase(String databaseName, String columnName)
+    {
+        MongoClient client = null;
+        client = new MongoClient("localHost", 27017);
+        MongoDatabase db = client.getDatabase(Constants.DB_NAME);
+
+        // First always drop the collections.
+        MongoCollection<Document> collection = db.getCollection(Constants.COLL_NAME);
+        return collection;
+    }
+
+
+
+
 }

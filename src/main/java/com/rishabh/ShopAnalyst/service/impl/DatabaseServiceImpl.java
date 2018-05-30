@@ -1,6 +1,6 @@
 package com.rishabh.ShopAnalyst.service.impl;
 
-import com.rishabh.ShopAnalyst.doa.CustomeMongoDao;
+import com.rishabh.ShopAnalyst.doa.DatabaseMangoDoa;
 import com.rishabh.ShopAnalyst.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 public class DatabaseServiceImpl implements DatabaseService {
 
     @Autowired
-    CustomeMongoDao mongoDao;
+    DatabaseMangoDoa mongoDao;
+
     @Override
     public String getDatabaseNames() {
         String result = "";

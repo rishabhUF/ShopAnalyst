@@ -1,6 +1,7 @@
 package com.rishabh.ShopAnalyst.service;
 
 import com.rishabh.ShopAnalyst.doa.CustomeMongoDao;
+import com.rishabh.ShopAnalyst.doa.DatabaseMangoDoa;
 import com.rishabh.ShopAnalyst.service.impl.DatabaseServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class DatabaseServiceTest {
 
     @Mock
-    CustomeMongoDao mongoDao;
+    DatabaseMangoDoa mongoDao;
 
     @InjectMocks
     private DatabaseService databaseService = new DatabaseServiceImpl();

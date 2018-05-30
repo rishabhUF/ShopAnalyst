@@ -9,9 +9,12 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.rishabh.ShopAnalyst.constants.Constants;
+import com.rishabh.ShopAnalyst.doa.AnalyzeMongoDoa;
+import com.rishabh.ShopAnalyst.doa.CustomeMongoDao;
 import com.rishabh.ShopAnalyst.domains.Member;
 import com.rishabh.ShopAnalyst.service.AnalyzeService;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,46 +23,28 @@ import java.util.List;
 @Service
 public class AnalyzeServiceImpl implements AnalyzeService {
 
+    @Autowired
+    AnalyzeMongoDoa mongoDao;
 
     @Override
     public String textSearch(String query, String pageNumber) {
-        MongoClient client = null;
-        final List<Member> memberData = new ArrayList<Member>();
-        try{
-            client = new MongoClient("localhost",27017);
-            MongoDatabase db = client.getDatabase(Constants.DB_NAME);
-            MongoCollection<Document> collection = db.getCollection(Constants.COLL_NAME);
-
-            Document regexQuery = new Document();
-            regexQuery.put(Constants.CAPTION, new Document("$regex",query).append("$options","i"));FindIterable<Document> cursorIterator = null;
-            if(new Integer(pageNumber) > 0){
-                final int endIndex = new Integer(pageNumber) * Constants.PAGE_SIZE;
-                final int startIndex = endIndex - Constants.PAGE_SIZE;
-                cursorIterator = collection.find(regexQuery).limit(Constants.PAGE_SIZE).skip(startIndex);
-            }
-            else{
-                cursorIterator = collection.find(regexQuery);
-            }
-
-            if(cursorIterator != null){
-                for(Document item : cursorIterator){
-                    final Member member = Member.getMemberFromMongo(item);
-                    memberData.add(member);
-                }
-            }
-        }
-        finally{
-            if (client != null)
-                client.close();
-        }
-        if (memberData.size() == 0) {
+        List<Member> memberData = mongoDao.getSearchResult(query,pageNumber);
+        Gson gson = new Gson();
+       if(memberData == null){
+         final Member member = new Member();
+           member.setErrorMessage("Error in finding the query. Check the parameter again.");
+           List<Member> memberList = new ArrayList<>();
+           memberList.add(member);
+           return gson.toJson(memberList);
+       }
+        else if (memberData.size() == 0) {
             final Member member = new Member();
             member.setErrorMessage("No element found. Empty Collection");
             memberData.add(member);
         }
-        Gson gson = new Gson();
         return gson.toJson(memberData);
     }
+
 
     @Override
     public String count() {
